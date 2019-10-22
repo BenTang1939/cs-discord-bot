@@ -10,3 +10,5 @@ __Update Log:__
 [06/10/2019 Sunday]: Week 1, created basic .json utility files and enabled receiving data via key from file. 
 
 [13/10/2019 Sunday]: Week 2, utilising discord.net and connected bot to oauth2 and token, allowing bot to be online.
+
+[22/10/2019 Wednesday]: Week 3, uploaded commands, created misc commands and debugged token connectivity issues.
