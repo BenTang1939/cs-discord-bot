@@ -11,4 +11,6 @@ __Update Log:__
 
 [13/10/2019 Sunday]: Week 2, utilising discord.net and connected bot to oauth2 and token, allowing bot to be online.
 
-[22/10/2019 Wednesday]: Week 3, uploaded commands, created misc commands and debugged token connectivity issues.
+[23/10/2019 Wednesday]: Week 3, uploaded commands, created misc commands and debugged token connectivity issues.
+
+[30/10/2019 Wednesday]: Week 4, testing a choice command using random and string splitting.
