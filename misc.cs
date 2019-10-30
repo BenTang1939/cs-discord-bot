@@ -19,5 +19,20 @@ namespace DiscordBot.Modules{
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+
+        [Command("pick")]
+        public async Task Pick([Remainder]string message){
+            string[] options = message.Split(new char[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+
+            Random r = new Random();
+            string selection = options[r.Next(0, options.Length)];
+
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Choice for " + Context.User.Username);
+            embed.WithDescription("selection");
+            embed.WithColor(new Color(255, 255, 0));
+
+            await Context.Channel.SendMessageAsync("", false, embed);
+        }
     }
 }
