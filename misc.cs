@@ -34,5 +34,25 @@ namespace DiscordBot.Modules{
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+
+        [Command("PermissionCommand")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+
+        public async Task Perm([Remainder]string arg = ""){
+
+            if (!IsUserSecretOwner((SocketGuildUser)Context.User)) return;
+            var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
+            await dmChannel.SendMessageAsync(Utilities.GetAlert("Secret"));
+            await Context.Channel.SendMessageAsync(Utilities.GetAlert("Secret"));
+        }
+
+        public bool IsUserSecretOwner(SocketGuildUser User){
+            string targetRoleName = "SecretOwner";
+            var result = from r in User.Guild.Roles where r.Name == targetRoleName select r.Id;
+            ulong roleID = result.FirstOrDefault();
+            if(roleID == 0) return false;
+            var targetRole = User.Guild.GetRole(roleID);
+            return User.Roles.Contains(targetRole);
+        }
     }
 }
