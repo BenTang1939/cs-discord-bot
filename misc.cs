@@ -20,6 +20,8 @@ namespace DiscordBot.Modules{
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 
+
+
         [Command("pick")]
         public async Task Pick([Remainder]string message){
             string[] options = message.Split(new char[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
@@ -53,6 +55,11 @@ namespace DiscordBot.Modules{
             if(roleID == 0) return false;
             var targetRole = User.Guild.GetRole(roleID);
             return User.Roles.Contains(targetRole);
+        }
+
+        [Command("data")]
+        public async Task GetData(){
+            await Context.Channel.SendMessageAsync("Data Has" + DataStorage.pairs.Count + "pairs.");
         }
     }
 }
