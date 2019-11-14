@@ -16,3 +16,5 @@ __Update Log:__
 [30/10/2019 Wednesday]: Week 4, testing a choice command using random and string splitting.
 
 [7/11/2019 Thursday]: Week 5, testing with a command that fetches a user's roles by user context ID and only allows certain roles to use.
+
+[14/11/2019 Thursday]: Week 6, updated with persistant data storage and fetching data from json file and utilising data fetched.
