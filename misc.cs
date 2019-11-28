@@ -61,5 +61,65 @@ namespace DiscordBot.Modules{
         public async Task GetData(){
             await Context.Channel.SendMessageAsync("Data Has" + DataStorage.pairs.Count + "pairs.");
         }
+
+        [Command("8ball")]
+        [Alias("ask")]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        public async Task AskEightBall([Remainder]string args = null)
+        {
+            
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+
+            var replies = new List<string>();
+
+            replies.Add("yes");
+            replies.Add("no");
+            replies.Add("maybe");
+            replies.Add("Possibly");
+
+            embed.WithColor(new Color(0, 255,0));
+            embed.Title = "Welcome to the 8-ball!";
+            
+            sb.AppendLine($"{Context.User.Username},");
+            sb.AppendLine();
+
+            if (args == null)
+            {
+                sb.AppendLine("Sorry, can't answer a question you didn't ask!");
+            }
+            else 
+            {
+                var answer = replies[new Random().Next(replies.Count - 1)];
+                
+                sb.AppendLine($"You asked: [**{args}**]...");
+                sb.AppendLine();
+                sb.AppendLine($"...your answer is [**{answer}**]");
+
+                switch (answer) 
+                {
+                    case "yes":
+                    {
+                        embed.WithColor(new Color(0, 255, 0));
+                        break;
+                    }
+                    case "no":
+                    {
+                        embed.WithColor(new Color(255, 0, 0));
+                        break;
+                    }
+                    case "maybe":
+                    {
+                        embed.WithColor(new Color(255,255,0));
+                        break;
+                    }
+                    case "Possibly":
+                    {
+                        embed.WithColor(new Color(255,0,255));
+                        break;
+                    }
+                }
+            }
     }
 }
+
