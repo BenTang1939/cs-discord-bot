@@ -73,42 +73,42 @@ namespace DiscordBot.Modules{
 
             var replies = new List<string>();
 
-            replies.Add("yes");
-            replies.Add("no");
-            replies.Add("maybe");
+            replies.Add("Yes");
+            replies.Add("No");
+            replies.Add("Maybe");
             replies.Add("Possibly");
 
             embed.WithColor(new Color(0, 255,0));
-            embed.Title = "Welcome to the 8-ball!";
+            embed.Title = "8-ball Command.";
             
             sb.AppendLine($"{Context.User.Username},");
             sb.AppendLine();
 
             if (args == null)
             {
-                sb.AppendLine("Sorry, can't answer a question you didn't ask!");
+                sb.AppendLine("Re-enter this time with a question.");
             }
             else 
             {
-                var answer = replies[new Random().Next(replies.Count - 1)];
+                var ans = r[new Random().Next(r.Count - 1)];
                 
-                sb.AppendLine($"You asked: [**{args}**]...");
+                sb.AppendLine($"Your question was: [**{args}**]...");
                 sb.AppendLine();
-                sb.AppendLine($"...your answer is [**{answer}**]");
+                sb.AppendLine($"...your answer is [**{ans}**]");
 
                 switch (answer) 
                 {
-                    case "yes":
+                    case "Yes":
                     {
                         embed.WithColor(new Color(0, 255, 0));
                         break;
                     }
-                    case "no":
+                    case "No":
                     {
                         embed.WithColor(new Color(255, 0, 0));
                         break;
                     }
-                    case "maybe":
+                    case "Maybe":
                     {
                         embed.WithColor(new Color(255,255,0));
                         break;
@@ -120,6 +120,18 @@ namespace DiscordBot.Modules{
                     }
                 }
             }
+            
+        [Name("Moderator")]
+        [RequireContext(ContextType.Guild)]
+        public class ModeratorModule : ModuleBase<SocketCommandContext>{
+        [Command("Kick")]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        [RequireBotPermission(GuildPermission.KickMembers)]
+        public async Task Kick([Remainder]SocketGuildUser user)
+        {
+            await ReplyAsync($"The following user: {user.Mention} has been kicked.");
+            await user.KickAsync();
+        }
+        }
     }
 }
-
