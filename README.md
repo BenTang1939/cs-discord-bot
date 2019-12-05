@@ -20,3 +20,5 @@ __Update Log:__
 [14/11/2019 Thursday]: Week 6, updated with persistant data storage and fetching data from json file and utilising data fetched.
 
 [28/11/2019 Thursday]: Week 7, added an 8 ball command utilising permissions and secondary command calling.
+
+[5/12/2019 Thursday]: Week 8, added a kick command, requiring and checking user permissions.
