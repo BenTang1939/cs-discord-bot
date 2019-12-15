@@ -10,6 +10,22 @@ using System.Reflection;
 
 namespace DiscordBot.Modules{
     public class Misc : ModuleBase<SocketCommandContext>{
+        
+        [Command("Warn")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        public async Task WarnUser(IGuildUser user)
+        {
+            var userAccount = UserAccounts.GetAccount((SocketUser)user);
+            userAccount.NumberOfWarnings++;
+            UserAccounts.SaveAccounts();
+
+            if(userAccount.NumberOfWarnings >= 3)
+            {
+                await user.Guild.AddBanAsync(user, 5)
+            }
+        }
+        
         [Command("Echo")]
         public async Task Echo([Remainder]string message){
             var embed = new EmbedBuilder();
