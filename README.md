@@ -22,3 +22,5 @@ __Update Log:__
 [28/11/2019 Thursday]: Week 7, added an 8 ball command utilising permissions and secondary command calling.
 
 [5/12/2019 Thursday]: Week 8, added a kick command, requiring and checking user permissions.
+
+[15/12/2019 Sunday]: Week 9, added a warning system, automated banning users
