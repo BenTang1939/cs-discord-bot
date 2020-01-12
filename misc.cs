@@ -7,25 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using WhalesFargo.Services;
 
 namespace DiscordBot.Modules{
     public class Misc : ModuleBase<SocketCommandContext>{
-        
-        [Command("Warn")]
-        [RequireUserPermission(GuildPermission.Administrator)]
-        [RequireBotPermission(GuildPermission.BanMembers)]
-        public async Task WarnUser(IGuildUser user)
-        {
-            var userAccount = UserAccounts.GetAccount((SocketUser)user);
-            userAccount.NumberOfWarnings++;
-            UserAccounts.SaveAccounts();
-
-            if(userAccount.NumberOfWarnings >= 3)
-            {
-                await user.Guild.AddBanAsync(user, 5)
-            }
-        }
-        
         [Command("Echo")]
         public async Task Echo([Remainder]string message){
             var embed = new EmbedBuilder();
@@ -149,5 +134,125 @@ namespace DiscordBot.Modules{
             await user.KickAsync();
         }
         }
+
+        [Name("Audio")]
+        public class AudioModule : CustomModule{
+            private readonly AudioService m_Service;
+
+            public AudioModule(AudioService service)
+            {
+                m_Service = service;
+                m_Service.SetParentModule(this);.
+            }
+
+            [Command("join", RunMode = RunMode.Async)]
+            public async Task JoinVoiceChannel()
+            {
+                if (m_Service.GetDelayAction()) return;
+                await m_Service.JoinAudioAsync(Context.Guild, (Context.User as IVoiceState).VoiceChannel);
+
+                await m_Service.CheckAutoPlayAsync(Context.Guild, Context.Channel);
+            }
+
+            [Command("leave", RunMode = RunMode.Async)]
+            public async Task LeaveVoiceChannel()
+            {
+                await m_Service.LeaveAudioAsync(Context.Guild);
+            }
+
+            [Command("play", RunMode = RunMode.Async)]
+            public async Task PlayVoiceChannel([Remainder] string song)
+            {
+                await m_Service.ForcePlayAudioAsync(Context.Guild, Context.Channel, song);
+                if (m_Service.GetNumPlaysCalled() == 0) await m_Service.CheckAutoPlayAsync(Context.Guild, Context.Channel);
+            }
+
+            [Command("play", RunMode = RunMode.Async)]
+            public async Task PlayVoiceChannelByIndex(int index)
+            {
+                await PlayVoiceChannel(m_Service.GetLocalSong(index)); 
+            }
+
+            [Command("pause", RunMode = RunMode.Async)]
+            public async Task PauseVoiceChannel()
+            {
+                m_Service.PauseAudio();
+                await Task.Delay(0);
+            }
+
+            [Command("resume", RunMode = RunMode.Async)]
+            public async Task ResumeVoiceChannel()
+            {
+                m_Service.ResumeAudio();
+                await Task.Delay(0);
+            }
+
+            [Command("stop", RunMode = RunMode.Async)]
+            public async Task StopVoiceChannel()
+            {
+                m_Service.StopAudio();
+                await Task.Delay(0);
+            }
+
+            [Command("volume")]
+            public async Task VolumeVoiceChannel(int v)
+            {
+                m_Service.AdjustVolume((float)v / 100.0f);
+                await Task.Delay(0);
+            }
+
+            [Command("add", RunMode = RunMode.Async)]
+            public async Task AddVoiceChannel([Remainder] string song)
+            {
+
+                await m_Service.PlaylistAddAsync(song);
+                await m_Service.CheckAutoPlayAsync(Context.Guild, Context.Channel);
+            }
+
+            [Command("add", RunMode = RunMode.Async)]
+            public async Task AddVoiceChannelByIndex(int index)
+            {
+                await AddVoiceChannel(m_Service.GetLocalSong(index));
+            }
+
+            [Command("skip", RunMode = RunMode.Async)]
+            public async Task SkipVoiceChannel()
+            {
+                m_Service.PlaylistSkip();
+                await Task.Delay(0);
+            }
+
+            [Command("playlist", RunMode = RunMode.Async)]
+            public async Task PrintPlaylistVoiceChannel()
+            {
+                m_Service.PrintPlaylist();
+                await Task.Delay(0);
+            }
+
+            [Command("autoplay", RunMode = RunMode.Async)]
+            public async Task AutoPlayVoiceChannel(bool enable)
+            {
+                m_Service.SetAutoPlay(enable);
+                await m_Service.CheckAutoPlayAsync(Context.Guild, Context.Channel);
+            }
+
+            [Command("download", RunMode = RunMode.Async)]
+            public async Task DownloadSong([Remainder] string path)
+            {
+                await m_Service.DownloadSongAsync(path);
+            }
+
+            [Command("songs", RunMode = RunMode.Async)]
+            public async Task PrintSongDirectory(int page = 0)
+            {
+                m_Service.PrintLocalSongs(page);
+                await Task.Delay(0);
+            }
+
+            [Command("cleanupsongs", RunMode = RunMode.Async)]
+            public async Task CleanSongDirectory()
+            {
+                await m_Service.RemoveDuplicateSongsAsync();
+            
     }
 }
