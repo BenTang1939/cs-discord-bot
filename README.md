@@ -24,3 +24,5 @@ __Update Log:__
 [5/12/2019 Thursday]: Week 8, added a kick command, requiring and checking user permissions.
 
 [15/12/2019 Sunday]: Week 9, added a warning system, automated banning users
+
+[12/1/2020 Sunday]: Week 10, added audio commands, play, get and stream audio from a youtube url or given index, searching youtube, downloading it locally, and then replaying it. Added audio controls such as queue, resume, pause, and setting volume for download.
