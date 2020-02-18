@@ -29,4 +29,8 @@ __Update Log:__
 
 [26/1/2020 Sunday]: Week 11, began on the API module, worked on the dictionary api retrieving definitions from an online api through discord input.
 
-[01/1/2020 Saturday]: Week 12, finished the rest of the API module, added integrations for the steam API, retrieving user data from steam itself to get information and getting weather from another API.
+[01/02/2020 Saturday]: Week 12, finished the rest of the API module, added integrations for the steam API, retrieving user data from steam itself to get information and getting weather from another API.
+
+[09/02/2020 Saturday]: Week 13, started the maths functions, where input is taken as a number and a function is applied to it.
+
+[18/02/2020 Tuesday]: Week 14, completed the maths module with graphing functions where a graph can be returned as an image with different plots and values as input.
