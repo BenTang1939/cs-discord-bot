@@ -34,3 +34,7 @@ __Update Log:__
 [09/02/2020 Saturday]: Week 13, started the maths functions, where input is taken as a number and a function is applied to it.
 
 [18/02/2020 Tuesday]: Week 14, completed the maths module with graphing functions where a graph can be returned as an image with different plots and values as input.
+
+[27/02/2020 Thursday]: Week 15, added in a levelling system, logs use of the bot and activity in the discord server.
+
+[08/03/2020 Sunday]: Week 16, created a command that retrieves all user data from the discord api from the discord server.
