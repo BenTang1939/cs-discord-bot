@@ -25,9 +25,9 @@ namespace csbot
                 {
                     var User = await message.Author.User(Guild, botContext);
 
-                    if (!User.LastExpMessage.HasValue || (DateTime.Now - kuvuUser.LastExpMessage.Value).Minutes >= 1)
+                    if (!User.LastExpMessage.HasValue || (DateTime.Now - User.LastExpMessage.Value).Minutes >= 1)
                     {
-                        if (kuvuGuild.ShowLevelUp)
+                        if (Guild.ShowLevelUp)
                         {
                             await User.AddExp(new Random().Next(1, 5), message.Channel, message.Author.Mention);
                         }
