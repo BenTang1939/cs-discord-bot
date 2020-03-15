@@ -457,19 +457,12 @@ namespace DiscordBot.Modules{
         }
             account.Money -= amount;
             _UserAccounts.SaveAccounts(Context.User.Id);
-
-            var slotEmojis = Global.Slot.Spin();
             var payoutAndFlavour = Global.Slot.GetPayoutAndFlavourText(amount);
 
             if (payoutAndFlavour.Item1 > 0)
             {
-                account.Money += payoutAndFlavour.Item1;
                 _UserAccounts.SaveAccounts();
             }            
-
-            await ReplyAsync(slotEmojis);
-            await Task.Delay(1000);
-            await ReplyAsync(payoutAndFlavour.Item2);
         }
     }
 }
