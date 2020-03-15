@@ -274,7 +274,7 @@ namespace DiscordBot.Modules{
             
             }
 
-         [Name ("User Info")]
+            [Name ("User Info")]
         [Command ("userinfo")]
         [Summary ("Gets information about the specified user")]
         [CommandOptions (typeof (UserInfoOptions))]
@@ -286,6 +286,7 @@ namespace DiscordBot.Modules{
 
             string userRoles = DiscordHelpers.GetListOfUsersRoles (user);
             IRole highestRole = DiscordHelpers.GetUsersHigherstRole (user);
+
             if (highestRole != null)
                 emb.Color = highestRole.Color;
             EmbedAuthorBuilder author = new EmbedAuthorBuilder ();
@@ -296,7 +297,6 @@ namespace DiscordBot.Modules{
                 author.Name += " (Webhook)";
 
             emb.Author = author;
-
             if (string.IsNullOrEmpty (user.AvatarId))
                 emb.ThumbnailUrl = $"https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png";
             else
@@ -315,7 +315,6 @@ namespace DiscordBot.Modules{
             emb.AddField("Created account at", user.CreatedAt.ToString("dd MMM yyyy, HH:mm"));
 
             emb.AddField("Joined server at", ((DateTimeOffset)user.JoinedAt).ToString("dd MMM yyyy, HH:mm"));
-
             if (string.IsNullOrEmpty(userRoles) == false)
                 emb.AddField("Role(s)", userRoles);
 
@@ -399,6 +398,78 @@ namespace DiscordBot.Modules{
 
                 return permissions.Remove (permissions.Length - 2);
         }
-            
+
+        private readonly Daily _DailyReward;
+        private readonly MoneyTransfer _MoneyTransfer;
+        private readonly UserAccounts _UserAccounts;
+
+        public Economy(Daily Daily, MoneyTransfer MoneyTransfer, UserAccounts UserAccounts)
+        {
+            _DailyReward = Daily;
+            _MoneyTransfer = MoneyTransfer;
+            _UserAccounts = UserAccounts;
+        }
+
+        [Command("Daily"))]
+        public async Task GetDaily()
+        {
+            try
+            {
+                _DailyMoney.GetDaily(Context.User.Id);
+                await ReplyAsync($"You have earned {Constants.Daily}.");
+            }
+            catch (InvalidOperationException e)
+            {
+                var timeSpanString = string.Format("{0:%h} hours {0:%m} minutes {0:%s} seconds", new TimeSpan(24,0,0).Subtract((TimeSpan)e.Data["sinceLastDaily"]));
+                await ReplyAsync($"You have already claimed your daily reward.");
+            }
+        }
+
+        [Command("Balance")]
+        [Alias("Bal", "bal")]
+        public async Task CheckMiunies()
+        {
+            var account = _UserAccounts.GetById(Context.User.Id);
+            await ReplyAsync(ReturnMoney(account.Money, Context.User.Mention));
+        }
+
+        [Command("Balance")]
+        [Alias("Bal", "bal")]
+        public async Task CheckMiuniesOther(IGuildUser target)
+        {
+            var account = _UserAccounts.GetById(target.Id);
+            await ReplyAsync(ReturnMoney(account.Money, target.Mention));
+        }
+
+
+        [Command("Pay")]
+        public async Task TransferMinuies(IGuildUser target, ulong amount)
+        {
+            try
+            {
+                MoneyTransfer.UserToUser(Context.User.Id, target.Id, amount);
+                await ReplyAsync($"{Context.User.Username} has given {target.Username} {amount}.");
+            }
+            catch (InvalidOperationException e)
+            {
+                await ReplyAsync($"{e.Message}");
+            }
+        }
+            account.Money -= amount;
+            _UserAccounts.SaveAccounts(Context.User.Id);
+
+            var slotEmojis = Global.Slot.Spin();
+            var payoutAndFlavour = Global.Slot.GetPayoutAndFlavourText(amount);
+
+            if (payoutAndFlavour.Item1 > 0)
+            {
+                account.Money += payoutAndFlavour.Item1;
+                _UserAccounts.SaveAccounts();
+            }            
+
+            await ReplyAsync(slotEmojis);
+            await Task.Delay(1000);
+            await ReplyAsync(payoutAndFlavour.Item2);
+        }
     }
 }
