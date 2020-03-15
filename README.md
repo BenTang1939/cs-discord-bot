@@ -38,3 +38,5 @@ __Update Log:__
 [27/02/2020 Thursday]: Week 15, added in a levelling system, logs use of the bot and activity in the discord server.
 
 [08/03/2020 Sunday]: Week 16, created a command that retrieves all user data from the discord api from the discord server.
+
+[15/03/2020 Sunday]: Week 17, basic economy commands including daily rewards, money transfer and balance storage added.
